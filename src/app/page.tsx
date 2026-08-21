@@ -45,16 +45,23 @@ export default function Home() {
      * removes it from Today's Targets.
      */
 
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
     const todaysTargets = exams.flatMap((exam) =>
-        exam.subjects.flatMap((subject) => {
-            const topic = subject.topics.find(
-                (topic) => !topic.completed
-            );
+        exam.subjects.flatMap((subject) =>
+            subject.topics
+                .filter((topic) => {
+                    if (topic.completed) return false;
+                    if (!topic.deadline) return false;
 
-            if (!topic) return [];
+                    const deadline = new Date(topic.deadline);
+                    deadline.setHours(0, 0, 0, 0);
 
-            return [
-                {
+                    return deadline <= today;
+                })
+                .map((topic) => ({
                     examId: exam.id,
                     examName: exam.name,
 
@@ -62,9 +69,8 @@ export default function Home() {
                     subjectName: subject.name,
 
                     topic,
-                },
-            ];
-        })
+                }))
+        )
     );
 
     return (
