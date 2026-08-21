@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Plus,
     Target,
@@ -30,6 +30,13 @@ export default function Home() {
     const toggleTopic = useExamStore(
         (state) => state.toggleTopic
     );
+    const loadExams = useExamStore(
+  (state) => state.loadExams
+);
+
+useEffect(() => {
+  loadExams();
+}, [loadExams]);
 
     const [showModal, setShowModal] =
         useState(false);

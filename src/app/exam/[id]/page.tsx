@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -19,6 +19,14 @@ export default function ExamPage() {
             (exam) => exam.id === examId
         )
     );
+
+    const loadExams = useExamStore(
+        (state) => state.loadExams
+    );
+
+    useEffect(() => {
+        loadExams();
+    }, [loadExams]);
 
     const deleteSubject = useExamStore(
         (state) => state.deleteSubject
