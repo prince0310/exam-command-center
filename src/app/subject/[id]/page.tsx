@@ -2,7 +2,10 @@
 
 import { ArrowLeft, Plus } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import {
+    useEffect,
+    useState,
+} from "react";
 
 import { useExamStore } from "@/hooks/useExamStore";
 import TopicCard from "@/components/TopicCard";
@@ -19,6 +22,14 @@ export default function SubjectPage() {
     const params = useParams();
     const searchParams = useSearchParams();
 
+    const loadExams = useExamStore(
+        (state) => state.loadExams
+    );
+
+    useEffect(() => {
+        loadExams();
+    }, [loadExams]);
+    
     const subjectId = params.id as string;
     const examId = searchParams.get("examId");
 
